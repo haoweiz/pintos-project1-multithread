@@ -10,10 +10,10 @@ void *thread1(void *arg){
   for(int i = 0;i <= 1000;i++){
     if(i%2==1){
       printf("%d ",i);
-      pthread_cond_wait(&even,&lock);
+      pthread_cond_signal(&odd);
     }
     else
-      pthread_cond_signal(&odd);
+      pthread_cond_wait(&even,&lock);
   }
   pthread_mutex_unlock(&lock);
 }
@@ -23,10 +23,10 @@ void *thread2(void *arg){
   for(int i = 0;i <= 1000;i++){
     if(i%2==0){
         printf("%d ",i);
-        pthread_cond_wait(&odd,&lock);
+        pthread_cond_signal(&even);
     }
     else
-        pthread_cond_signal(&even);
+        pthread_cond_wait(&odd,&lock);
   }
   pthread_mutex_unlock(&lock);
 }
